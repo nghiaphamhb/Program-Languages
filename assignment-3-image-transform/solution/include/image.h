@@ -3,7 +3,10 @@
 #define IMAGE
 
 #include <stdint.h>
+#include <stdlib.h>
+
 #include "bmp.h"
+#include "utils.h"
 
 struct image {
   uint64_t width, height;

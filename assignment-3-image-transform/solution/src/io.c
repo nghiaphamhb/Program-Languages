@@ -1,12 +1,4 @@
 #include "io.h"
-#include "config.h"
-#include "utils.h"
-#include "image.h"
-
-enum  write_status  {
-  WRITE_OK = 0,
-  WRITE_ERROR
-};
 
 bool read_header(FILE *in, struct bmp_header *const header){
     if(fread(header, BMP_HEADER_SIZE, 1, in) != 1) return false;
@@ -65,12 +57,12 @@ bool write_header(FILE* out, const struct image *const img){
 bool write_data(FILE* out, const struct image *const img){
     size_t padding = get_padding(img);
 
-    for(size_t row_number = 0; row_number < (size_t) img->height, row_number ++){
-        struct pixel first_pixel_in_row = img->data[img->width * y];
+    for(size_t row_number = 0; row_number < (size_t) img->height; row_number ++){
+        struct pixel first_pixel_in_row = img->data[img->width * row_number];
 
         if( fwrite(&first_pixel_in_row, PIXEL_SIZE, img->width, out) != 1) return false;
         //add padding
-        fseek(out, (long) padding_size, SEEK_CUR); 
+        fseek(out, (long) padding, SEEK_CUR); 
     }
     return true;
 }

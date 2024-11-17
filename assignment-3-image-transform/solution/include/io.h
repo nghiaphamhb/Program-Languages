@@ -1,7 +1,13 @@
 #ifndef IO
 #define IO
 
+#include <stdio.h>
+#include <stdbool.h>
+
+#include "bmp.h"
+#include "image.h"
 #include "utils.h"
+#include "config.h"
 
 /*  deserializer   */
 enum read_status  {
