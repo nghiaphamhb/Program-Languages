@@ -9,7 +9,7 @@ bool read_header(FILE *in, struct bmp_header *const header){
 bool read_data(FILE *in, const struct image *const img){
     size_t padding = get_padding(img);
     struct pixel *first_pixel = img->data;
-    for (struct pixel *i_pixel = first_pixel; i_pixel < first_pixel + image_size(img); i_pixel += img->width) {
+    for (struct pixel *i_pixel = first_pixel; i_pixel < first_pixel + get_image_size(img); i_pixel += img->width) {
         fread(i_pixel, PIXEL_SIZE, img->width, in);
         fseek(in, (long) padding, SEEK_CUR);
     }
@@ -21,7 +21,7 @@ enum read_status from_bmp(FILE *in, struct image *const img) {
     if (!read_header(in, &header)) return READ_INVALID_HEADER;
     if(header.bfType != BMP_TYPE) return READ_INVALID_SIGNATURE;
 
-    *img = image_create(header.biWidth, header.biHeight);
+    *img = create_image(header.biWidth, header.biHeight);
     if (!read_data(in, img)) return READ_INVALID_BITS;
 
     return READ_OK;

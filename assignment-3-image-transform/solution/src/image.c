@@ -13,9 +13,6 @@ void destroy_image(struct image* image) {
     }
 }
 
-size_t image_size(struct image* img) {
-    return img->width * img->height * sizeof(struct pixel);
-}
 
 // struct image {
 //   uint64_t width, height;

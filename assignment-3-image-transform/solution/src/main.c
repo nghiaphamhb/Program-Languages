@@ -19,14 +19,15 @@ int main(int argc, char *argv[]) {
     const char *transformation = argv[3];
 
     // Đọc ảnh từ file nguồn
-    struct image source_image;
+    struct image *source_image = (struct image*)malloc(sizeof(struct image));
+
     if (from_bmp(source_image_path, &source_image) != READ_OK) {
         log_info(2, source_image_path);
         return;
     }
 
     // Tạo biến ảnh đích
-    struct image transformed_image;
+    struct image *transformed_image = (struct image*)malloc(sizeof(struct image));
 
     // Thực hiện phép biến đổi
     if (strcmp(transformation, "cw90") == 0 || 
@@ -37,7 +38,7 @@ int main(int argc, char *argv[]) {
         transformed_image = rotate(source_image, transformation);
     } else {
         log_info(3, transformation);
-        destroy_image(&source_image); // Giải phóng bộ nhớ của ảnh nguồn
+        destroy_image(source_image); // Giải phóng bộ nhớ của ảnh nguồn
     return;
 }
 
@@ -46,14 +47,14 @@ int main(int argc, char *argv[]) {
     // Ghi ảnh đã biến đổi ra file đích
     if (to_bmp(transformed_image_path, &transformed_image) != WRITE_OK) {
         log_info(4, transformed_image_path);
-        destroy_image(&source_image);
-        destroy_image(&transformed_image);
+        destroy_image(source_image);
+        destroy_image(transformed_image);
         return ;
     }
 
     // Giải phóng bộ nhớ
-    destroy_image(&source_image);
-    destroy_image(&transformed_image);
+    destroy_image(source_image);
+    destroy_image(transformed_image);
 
     log_success();
     return 1;

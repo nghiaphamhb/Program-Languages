@@ -29,7 +29,7 @@ bool read_header(FILE *in, struct bmp_header *const header);
 bool read_data(FILE *in, const struct image *const img);
 enum read_status from_bmp( FILE* in, struct image* img );
 
-bool write_header(const struct image *const img);
+bool write_header(FILE* out, const struct image *const img);
 bool write_data(FILE *in, const struct image *const img);
 enum write_status to_bmp( FILE* out, struct image const* img );
 
