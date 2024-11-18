@@ -11,8 +11,6 @@
 
 void* allocate_image_memory(size_t size, uint64_t width, uint64_t height);
 
-size_t get_padding(const struct image *img);
-size_t get_image_size(const struct image *img);
 
 
 

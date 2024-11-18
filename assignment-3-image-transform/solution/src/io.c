@@ -54,15 +54,42 @@ bool write_header(FILE* out, const struct image *const img){
     return true;
 }
 
-bool write_data(FILE* out, const struct image *const img){
+// bool write_data(FILE* out, const struct image *const img){
+//     size_t padding = get_padding(img);
+
+//     for(size_t row_number = 0; row_number < (size_t) img->height; row_number ++){
+//         struct pixel first_pixel_in_row = img->data[img->width * row_number];
+
+//         if( fwrite(&first_pixel_in_row, PIXEL_SIZE, img->width, out) != 1) return false;
+//         //add padding
+//         fseek(out, (long) padding, SEEK_CUR); 
+//     }
+//     return true;
+// }
+
+bool write_data(FILE *out, const struct image *const img) {
+    if (!out) {
+        printf("Error: Output file is not opened.\n");
+        return false;
+    }
+
     size_t padding = get_padding(img);
 
-    for(size_t row_number = 0; row_number < (size_t) img->height; row_number ++){
-        struct pixel first_pixel_in_row = img->data[img->width * row_number];
+    for (size_t row_number = 0; row_number < (size_t)img->height; row_number++) {
+        struct pixel *first_pixel_in_row = &img->data[img->width * row_number];
 
-        if( fwrite(&first_pixel_in_row, PIXEL_SIZE, img->width, out) != 1) return false;
-        //add padding
-        fseek(out, (long) padding, SEEK_CUR); 
+        // Ghi hàng pixel
+        if (fwrite(first_pixel_in_row, PIXEL_SIZE, img->width, out) != img->width) {
+            printf("Error: Failed to write row %zu\n", row_number);
+            return false;
+        }
+        // Ghi padding
+        for (size_t i = 0; i < padding; i++) {
+            if (fputc(0, out) == EOF) {
+                printf("Error: Failed to write padding at row %zu\n", row_number);
+                return false;
+            }
+        }
     }
     return true;
 }

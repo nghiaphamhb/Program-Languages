@@ -5,7 +5,6 @@
 #include "config.h"
 #include "image.h"
 
-/* создаёт копию изображения, которая повёрнута на 90 градусов */
 
 struct image* rotate( struct image* source, const char* transformation);
 struct image* rotated_right_90_img ( struct image* source);
