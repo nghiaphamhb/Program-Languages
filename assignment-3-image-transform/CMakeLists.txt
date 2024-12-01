@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(image-transform LANGUAGES C)
+project(image-transformer LANGUAGES C)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 

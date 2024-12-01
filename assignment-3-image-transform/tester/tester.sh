@@ -16,9 +16,6 @@ while [ $# -gt 0 ]; do
         --log-dir)
             log_dir="$1"; shift
             ;;
-        --err-code)
-            err_code="$1"; shift
-            ;;
         -h|--help)
             echo $usage
             exit
@@ -61,7 +58,7 @@ echo "$test_name: Started"
 $main_cmd >"$log_out" 2>"$log_err"
 rc=$?
 
-if [ "$rc" -ne "$err_code" ]; then
+if [ "$rc" -ne "0" ]; then
     echo
     echo "Failed at creating output. Command: $main_cmd"
     if [ ! -z "$log_dir" ]; then
@@ -74,25 +71,21 @@ if [ "$rc" -ne "$err_code" ]; then
     exit $rc
 fi
 
-if [ "$rc" -eq "0" ]; then
+$tester_cmd >$log_out 2>$log_err
+rc=$?
 
-    $tester_cmd >$log_out 2>$log_err
-    rc=$?
-    
-    if [ "$rc" -ne "0" ]; then
-        echo
-        echo "Actual and expected results differ. Command: $tester_cmd"
-        if [ ! -z "$log_dir" ]; then
-    	    test -s "$log_out" && echo "*** stdout log: $log_out ***" && cat $log_out
-    	    test -s "$log_err" && echo "*** stderr log: $log_err ***" && cat $log_err
-        fi
-        echo
-        echo "$test_name: Failed with exit code $rc"
-        echo "********************************************************************************"
-        exit $rc
+if [ "$rc" -ne "0" ]; then
+    echo
+    echo "Actual and expected results differ. Command: $tester_cmd"
+    if [ ! -z "$log_dir" ]; then
+	    test -s "$log_out" && echo "*** stdout log: $log_out ***" && cat $log_out
+	    test -s "$log_err" && echo "*** stderr log: $log_err ***" && cat $log_err
     fi
+    echo
+    echo "$test_name: Failed with exit code $rc"
+    echo "********************************************************************************"
+    exit $rc
 fi
 
 echo "$test_name: Finished successfully"
 echo "********************************************************************************"
-
