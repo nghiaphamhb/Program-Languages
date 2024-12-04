@@ -5,13 +5,9 @@ struct image create_image(uint64_t width, uint64_t height){
     return (struct image) {.width = width, .height = height, .data = data};
 }
 
-void destroy_image(struct image** image) {
-    if (image && *image) {
-        free((*image)->data);
-        (*image)->data = NULL;
-        free(*image);
-        *image = NULL;
-    }
+
+void destroy_image(const struct image image) {
+    free(image.data); 
 }
 
 size_t get_padding(const struct image *img){

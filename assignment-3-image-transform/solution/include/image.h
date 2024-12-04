@@ -13,7 +13,7 @@ struct image {
 };
 
 struct image create_image(uint64_t width, uint64_t height);
-void destroy_image(struct image** image);  
+void destroy_image(const struct image image);
 size_t get_image_size(const struct image *img);
 size_t get_padding(const struct image *img);
 
