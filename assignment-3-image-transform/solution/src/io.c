@@ -9,7 +9,7 @@ bool read_header(FILE *in, struct bmp_header *const header){
 bool read_data(FILE *in, const struct image *const img){
     size_t padding = get_padding(img);
     struct pixel *first_pixel = img->data;
-    uint32_t image_size = (uint32_t) get_image_size(img);
+    size_t image_size = img->width * img->height;
     for (struct pixel *i_pixel = first_pixel; i_pixel < first_pixel + image_size; i_pixel += img->width) {
         fread(i_pixel, PIXEL_SIZE, img->width, in);
         fseek(in, (long) padding, SEEK_CUR);

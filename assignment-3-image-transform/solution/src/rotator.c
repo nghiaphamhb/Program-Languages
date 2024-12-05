@@ -52,7 +52,6 @@ struct image flipped_horizontally_img(struct image source) {
     return flipped;
 }
 
-
 struct image rotated_right_90_img(struct image source) {
     struct image product = create_image(source.height, source.width);
 
